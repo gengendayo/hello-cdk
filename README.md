@@ -1,58 +1,25 @@
+# AWS CDK Serverless Backend Demo
 
-# Welcome to your CDK Python project!
+## 概要
+AWS Cloud Development Kit (CDK) と Python を用いて、サーバーレスなバックエンドAPI環境を構築した学習用プロジェクトです。
+クラウドインフラをコード（IaC: Infrastructure as Code）で定義し、構築から解体までのプロセスを自動化する実践的なアプローチを検証しました。
 
-This is a blank project for CDK development with Python.
+## アーキテクチャ
+本システムは、以下のAWSサービスを連携させたシンプルなサーバーレス構成です。
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+- **Amazon API Gateway**: クライアントからのリクエストを受け付けるエンドポイント
+- **AWS Lambda (Python)**: 中間処理を行うバックエンドロジック
+- **Amazon DynamoDB**: データを格納するNoSQLデータベース
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+APIにアクセスが発生するとLambda関数が起動し、環境変数からテーブル名を読み取ってDynamoDBへアクセスし、格納されているデータを全件取得（Scan）してJSON形式で返却します。
 
-To manually create a virtualenv on MacOS and Linux:
+## 使用技術
+- **AWS CDK v2**
+- **Python 3.x**
+- **AWS IAM** / **CloudWatch** (実行権限とログ管理)
 
-```
-$ python -m venv .venv
-```
+## 環境構築と実行手順
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-To add additional dependencies, for example other CDK libraries, just add
-them to your `requirements.txt` file and rerun the `python -m pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+1. **デプロイ（構築）**
+   ```bash
+   cdk deploy "Dev/*"
